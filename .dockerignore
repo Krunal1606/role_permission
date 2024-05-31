@@ -1,0 +1,37 @@
+# .dockerignore
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+
+# Ignore virtual environments
+env/
+venv/
+.kvenv/
+
+# Ignore development tools files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore test coverage files
+.coverage
+*.cover
+.hypothesis/
+
+# Ignore distribution files
+build/
+dist/
+*.egg-info/
+
+# Ignore Docker-related files
+Dockerfile*
+docker-compose.yml
+
+# Ignore other unnecessary files
+.DS_Store
+*.log
+.env

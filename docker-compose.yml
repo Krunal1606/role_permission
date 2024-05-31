@@ -1,0 +1,54 @@
+services:
+  role_permission:
+    build: .
+    image: role_permission
+    container_name: role_permission
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    restart: always
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - pgadmin
+    env_file:
+      - .env
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+      - ./pgadmin/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=Jwq9M@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - postgres
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    command: nginx -g 'daemon off;'
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - role_permission

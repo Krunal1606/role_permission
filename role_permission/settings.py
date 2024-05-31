@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import dotenv
+
+dotenv.load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vr_d10x2h_pi^w_6q8qy%$pg8$zvot85)h4@pq^bq&prxb79(c'
+SECRET_KEY =  os.getenv("SECRET_KEY",'django-insecure-vr_d10x2h_pi^w_6q8qy%$pg8$zvot85)h4@pq^bq&prxb79(c',)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG",False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv("ALLOWED_HOSTS")]
 
 
 # Application definition
@@ -57,7 +61,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
-        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -75,13 +78,33 @@ WSGI_APPLICATION = 'role_permission.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_DB','role_permission'),
+#         'USER': os.environ.get('POSTGRES_USER','postgres'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD','Kd1606'),
+#         'HOST': os.environ.get('DB_HOST','localhost'),
+#         'PORT': os.environ.get('DB_PORT',7000),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB','role_permission'),
+        'USER': os.getenv('POSTGRES_USER','postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD','Kd1606'),
+        'HOST': os.getenv('DB_HOST','localhost'),
+        'PORT': os.getenv('DB_PORT',7000),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
